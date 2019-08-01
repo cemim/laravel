@@ -20,3 +20,9 @@ Route::get('/', function () {
 Route::get('produtos', 'MeuControlador@produtos');
 
 Route::get('multiplicar/{n1}/{n2}', 'MeuControlador@multiplicar')->where('n1', '[0-9]+')->where('n2', '[0-9]+');
+
+// Associa todos os métodos do controlador a rota
+// Para ver todas as chamadas:
+// php artisan route: list
+Route::resource('clientes', 'ClienteControlador');
+ 
