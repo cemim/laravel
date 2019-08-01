@@ -62,7 +62,7 @@ class ClienteControlador extends Controller
 		// $dados = $request->all();
 		// dd($dados);
 		$clientes = session('clientes');
-		$id = count($clientes) + 1;
+		$id = end($clientes)['id'] + 1;//Pega o ultimo elemento
 		$nome = $request->nome;
 		$dados = ['id'=> $id, 'nome'=>$nome]; 
 		$clientes[] = $dados; // Adicionar novo cliente
@@ -81,7 +81,8 @@ class ClienteControlador extends Controller
 	public function show($id)
 	{
 		$clientes = session('clientes');
-		$cliente = $clientes[$id - 1];
+		$index = $this->getIndex($id,$clientes); // Pega a posição do id
+		$cliente = $clientes[$index];
 		return view('clientes.info', compact(['cliente']));
 	}
 
@@ -94,7 +95,8 @@ class ClienteControlador extends Controller
 	public function edit($id)
 	{
 		$clientes = session('clientes');
-		$cliente = $clientes[$id - 1];
+		$index = $this->getIndex($id,$clientes); // Pega a posição do id
+		$cliente = $clientes[$index];
 		return view('clientes.edit', compact('cliente'));
 	}
 
@@ -107,8 +109,9 @@ class ClienteControlador extends Controller
 	 */
 	public function update(Request $request, $id)
 	{
-		$clientes = session('clientes');		
-		$clientes[$id - 1]['nome'] = $request->nome;
+		$clientes = session('clientes');
+		$index = $this->getIndex($id,$clientes); // Pega a posição do id		
+		$clientes[$index]['nome'] = $request->nome;
 		session(['clientes'=>$clientes]);
 		return redirect()->route('clientes.index');        
 	}
@@ -121,6 +124,18 @@ class ClienteControlador extends Controller
 	 */
 	public function destroy($id)
 	{
-		//
+		$clientes = session('clientes');
+		$index = $this->getIndex($id,$clientes); // Pega a posição do id
+		array_splice($clientes, $index, 1); // Apagar um unico elemento do index
+		session(['clientes'=>$clientes]);
+		return redirect()->route('clientes.index');
 	}
+
+	public function getIndex($id, $clientes)
+	{
+		$ids = array_column($clientes, 'id'); // Pega todos os IDs
+		$index = array_search($id, $ids); // Procura id dentro do array
+		return $index;
+	}
+
 }
