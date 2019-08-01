@@ -17,6 +17,15 @@ class ClienteControlador extends Controller
 		['id'=>4, 'nome'=>'Aline']
 	];
 
+    // Salvar os valores na sessão
+    public function __construct() {
+        $clientes = session('clientes');
+        if (!isset($clientes))
+        {
+            session(['clientes' => $this->clientes]);
+        }
+    }
+
 	/**
 	 * Display a listing of the resource.
 	 *
@@ -24,7 +33,7 @@ class ClienteControlador extends Controller
 	 */
 	public function index()
 	{
-		$clientes = $this->clientes;
+		$clientes = session('clientes');
 		return view('clientes.index', compact('clientes'));
 	}
 
@@ -46,14 +55,20 @@ class ClienteControlador extends Controller
 	 */
 	public function store(Request $request)
 	{   
+        if (!$request->nome) {
+            return redirect()->route('clientes.index');
+        }
 		// Recebe todos os valores com o token csrf
 		// $dados = $request->all();
 		// dd($dados);
-		$id = count($this->clientes) + 1;
+        $clientes = session('clientes');
+		$id = count($clientes) + 1;
 		$nome = $request->nome;
 		$dados = ['id'=> $id, 'nome'=>$nome]; 
-		$this->clientes[] = $dados; // Adicionar novo cliente
+		$clientes[] = $dados; // Adicionar novo cliente
+        session(['clientes'=>$clientes]);
 		//dd($this->clientes);
+        // Redirecionar
 		return redirect()->route('clientes.index');
 	}
 
