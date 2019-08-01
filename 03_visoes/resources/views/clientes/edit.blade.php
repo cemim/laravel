@@ -1,9 +1,7 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Editar Cliente</title>
-</head>
-<body>
+@extends('layouts.principal')
+@section('titulo', 'Editar')
+@section('conteudo')
+
 <h1>Editar Cliente</h1>
 <form action="{{ route('clientes.update', $cliente['id']) }}" method="post">
 	@csrf
@@ -11,6 +9,4 @@
 	<input type="text" name="nome" value="{{$cliente['nome']}}">
 	<input type="submit" value="Salvar">
 </form>
-
-</body>
-</html>
+@endsection
