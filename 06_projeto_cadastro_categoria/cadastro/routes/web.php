@@ -13,4 +13,8 @@
 
 Route::get('/', function () {
     return view('index');
-});
+})->name('home');
+
+
+Route::resource('produtos','ControladorProduto');
+Route::resource('categorias','ControladorCategoria');

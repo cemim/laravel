@@ -5,14 +5,14 @@
 
 	<div class="collapse navbar-collapse" id="navbar">
 		<ul class="navbar-nav mr-auto">
-			<li class="nav-item active">
-				<a class="nav-link" href="#">Home </a>
+			<li class="nav-item {{request()->routeIs('home') ? 'active' : '' }}">
+				<a class="nav-link" href="{{route('home')}}">Home </a>
 			</li>
-			<li class="nav-item">
-				<a class="nav-link" href="{{--route('produtos')--}}">Produtos </a>
+			<li class="nav-item {{request()->routeIs('produtos*') ? 'active' : '' }}">
+				<a class="nav-link" href="{{route('produtos.index')}}">Produtos </a>
 			</li>
-			<li class="nav-item">
-				<a class="nav-link" href="{{--route('categorias')--}}">Categorias </a>
+			<li class="nav-item {{request()->routeIs('categorias*') ? 'active' : '' }}">
+				<a class="nav-link" href="{{route('categorias.index')}}">Categorias </a>
 			</li>
 		</ul>
 	</div>
