@@ -40,12 +40,33 @@ class ClienteControlador extends Controller
 		// Minimo e máximo de caracteres
 		// Campo nome único na tabela clientes
 		// Validar campo email
-		$request->validate([
+		$regras = [
 			'nome'		=> 'required|min:3|max:20|unique:clientes',
 			'idade'		=> 'required',
 			'endereco'	=> 'required',
 			'email'		=> 'required|email'
-		]);
+		];
+
+		$mensagens = [
+			'required' => 'O atributo :attribute não pode estar em branco',
+            'nome.required' => 'É necessário nome', // Mensagem específica para o nome
+			'nome.min' => 'É necessário no mínimo 3 caracteres',
+			'nome.max' => 'É permitido no máximo 20 caracteres',
+			'nome.unique' => 'Cliente já existe',
+			'email.email' => 'Endereço de email não é válido'
+
+		]; // Personalizar mensagens
+
+		$request->validate($regras, $mensagens);
+
+		/*$request->validate([
+			'nome'		=> 'required|min:3|max:20|unique:clientes',
+			'idade'		=> 'required',
+			'endereco'	=> 'required',
+			'email'		=> 'required|email'
+		], $mensagens);*/
+
+
 
 		$cliente = new Cliente();
 		$cliente->nome = $request->input('nome');
